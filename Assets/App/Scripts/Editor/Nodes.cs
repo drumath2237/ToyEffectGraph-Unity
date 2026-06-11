@@ -6,11 +6,6 @@ using UnityEngine;
 
 namespace ToyEffectGraph.Editor
 {
-    internal interface IEvaluatableExpression
-    {
-        string EvaluateExpression();
-    }
-
     [Serializable]
     public abstract class BinaryOpsNode<T> : Node, IEvaluatableExpression
     {
