@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Unity.GraphToolkit.Editor;
-using UnityEngine;
 
 namespace ToyEffectGraph.Editor
 {
     [Serializable]
-    public class Spawn : ContextNode
+    public class Spawn : ContextNode, IEvaluatableExpression
     {
         public struct SpawnContextOutput
         {
@@ -13,12 +14,20 @@ namespace ToyEffectGraph.Editor
 
         protected override void OnDefinePorts(IPortDefinitionContext context)
         {
-            context.AddOutputPort<SpawnContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
+            context
+                .AddOutputPort<SpawnContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
+                .Build();
+        }
+
+        public string EvaluateExpression()
+        {
+            throw new NotImplementedException();
         }
     }
 
     [Serializable]
-    public class Initialize : ContextNode
+    public class Initialize : ContextNode, IEvaluatableExpression
     {
         public struct InitializeContextOutput
         {
@@ -26,13 +35,33 @@ namespace ToyEffectGraph.Editor
 
         protected override void OnDefinePorts(IPortDefinitionContext context)
         {
-            context.AddInputPort<Spawn.SpawnContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
-            context.AddOutputPort<InitializeContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
+            context
+                .AddInputPort<Spawn.SpawnContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
+                .Build();
+            context
+                .AddOutputPort<InitializeContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
+                .Build();
+        }
+
+        public string EvaluateExpression()
+        {
+            var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
+            var eval = $@"""
+[numthreads(64, 1, 1)]
+void Initialize(uint id : SV_DispatchThreadID)
+{{
+    {nodes.Select(n => n.EvaluateExpression())}\n
+}}
+""";
+
+            return eval;
         }
     }
 
     [Serializable]
-    public class Update : ContextNode
+    public class Update : ContextNode, IEvaluatableExpression
     {
         public struct UpdateContextOutput
         {
@@ -40,24 +69,40 @@ namespace ToyEffectGraph.Editor
 
         protected override void OnDefinePorts(IPortDefinitionContext context)
         {
-            context.AddInputPort<Initialize.InitializeContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead)
+            context
+                .AddInputPort<Initialize.InitializeContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
                 .Build();
-            context.AddOutputPort<UpdateContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
+            context
+                .AddOutputPort<UpdateContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
+                .Build();
+        }
+
+        public string EvaluateExpression()
+        {
+            var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
+            var eval = $@"""
+[numthreads(64, 1, 1)]
+void Update(uint id : SV_DispatchThreadID)
+{{
+    {nodes.Select(n => n.EvaluateExpression())}\n
+}}
+""";
+
+            return eval;
         }
     }
 
     [Serializable]
     public class Output : ContextNode
     {
-        public struct OutputContextOutput
-        {
-        }
-
         protected override void OnDefinePorts(IPortDefinitionContext context)
         {
-            context.AddInputPort<Update.UpdateContextOutput>("").WithConnectorUI(PortConnectorUI.Arrowhead).Build();
+            context
+                .AddInputPort<Update.UpdateContextOutput>("")
+                .WithConnectorUI(PortConnectorUI.Arrowhead)
+                .Build();
         }
     }
-
-
 }
