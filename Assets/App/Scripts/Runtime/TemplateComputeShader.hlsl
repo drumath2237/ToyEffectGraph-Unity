@@ -3,6 +3,17 @@
 #pragma kernel Initialize
 #pragma kernel Update
 
+
+float GetRandomNumber(float2 texCoord, int Seed)
+{
+    return frac(sin(dot(texCoord.xy, float2(12.9898, 78.233)) + Seed) * 43758.5453);
+}
+
+float rand()
+{
+    return GetRandomNumber(float2(0, 0), 0);
+}
+
 struct Particle
 {
     float3 position;

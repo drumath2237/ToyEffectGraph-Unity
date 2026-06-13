@@ -1,5 +1,4 @@
 ﻿using System;
-using JetBrains.Annotations;
 using Unity.GraphToolkit.Editor;
 using UnityEngine;
 
@@ -9,7 +8,6 @@ namespace ToyEffectGraph.Editor
     [Serializable]
     public class SetPosition : BlockNode, IEvaluatableExpression
     {
-        [NotNull]
         public readonly string PositionPortName = "positionPort";
 
         protected override void OnDefinePorts(IPortDefinitionContext context)
