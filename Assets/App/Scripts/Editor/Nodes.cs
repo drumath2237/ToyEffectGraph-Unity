@@ -100,6 +100,7 @@ namespace ToyEffectGraph.Editor
         }
     }
 
+    [Serializable]
     public class DecomposeVectorZ : SingleArgFunctionsNode<Vector3, float>
     {
         public override string EvaluateExpression()
@@ -230,7 +231,7 @@ namespace ToyEffectGraph.Editor
                 GetInputPortByName(InputPortCName).FirstConnectedPort.GetNode() as IEvaluatableExpression;
 
             return
-                $"float( {connectedNodeA.EvaluateExpression()}, {connectedNodeB.EvaluateExpression()}, {connectedNodeC.EvaluateExpression()} )";
+                $"float3( {connectedNodeA.EvaluateExpression()}, {connectedNodeB.EvaluateExpression()}, {connectedNodeC.EvaluateExpression()} )";
         }
     }
 }

@@ -47,7 +47,7 @@ namespace ToyEffectGraph.Editor
 
         public string EvaluateExpression()
         {
-            var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
+            var nodes = BlockNodes.OfType<IEvaluatableExpression>();
             var body = string.Join("\n", nodes.Select(n => n.EvaluateExpression()));
             var eval = $@"[numthreads(64, 1, 1)]
 void Initialize(uint id : SV_DispatchThreadID)
@@ -84,7 +84,7 @@ void Initialize(uint id : SV_DispatchThreadID)
 
         public string EvaluateExpression()
         {
-            var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
+            var nodes = BlockNodes.OfType<IEvaluatableExpression>();
             var body = string.Join("\n", nodes.Select(n => n.EvaluateExpression()));
             var eval = $@"[numthreads(64, 1, 1)]
 void Update(uint id : SV_DispatchThreadID)
