@@ -1,5 +1,7 @@
-﻿#pragma kernel initialize
-#pragma kernel update
+﻿// ReSharper disable CppInconsistentNaming
+
+#pragma kernel Initialize
+#pragma kernel Update
 
 struct Particle
 {
@@ -9,23 +11,23 @@ struct Particle
     // float age;
 };
 
-RWStructuredBuffer<Particle> particles;
+RWStructuredBuffer<Particle> _Particles;
 
-// float delta_time;
-float time;
+// float _DeltaTime;
+float _Time;
 
 [numthreads(64, 1, 1)]
-void initialize(uint id : SV_DispatchThreadID)
+void Initialize(uint id : SV_DispatchThreadID)
 {
-    Particle p;
+    Particle p = (Particle)0;
 
-    particles[id] = p;
+    _Particles[id] = p;
 }
 
 [numthreads(64, 1, 1)]
-void update(uint id : SV_DispatchThreadID)
+void Update(uint id : SV_DispatchThreadID)
 {
-    Particle p = particles[id];
+    Particle p = _Particles[id];
 
-    particles[id] = p;
+    _Particles[id] = p;
 }

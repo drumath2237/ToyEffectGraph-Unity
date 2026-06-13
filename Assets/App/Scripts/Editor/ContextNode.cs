@@ -50,13 +50,13 @@ namespace ToyEffectGraph.Editor
             var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
             var body = string.Join("\n", nodes.Select(n => n.EvaluateExpression()));
             var eval = $@"[numthreads(64, 1, 1)]
-void initialize(uint id : SV_DispatchThreadID)
+void Initialize(uint id : SV_DispatchThreadID)
 {{
     Particle p;
 
     {body}
 
-    particles[id] = p;
+    _Particles[id] = p;
 }}";
 
             return eval;
@@ -87,13 +87,13 @@ void initialize(uint id : SV_DispatchThreadID)
             var nodes = BlockNodes as IEnumerable<IEvaluatableExpression>;
             var body = string.Join("\n", nodes.Select(n => n.EvaluateExpression()));
             var eval = $@"[numthreads(64, 1, 1)]
-void update(uint id : SV_DispatchThreadID)
+void Update(uint id : SV_DispatchThreadID)
 {{
-    Particle p = particles[id];
+    Particle p = _Particles[id];
 
     {body}
 
-    particles[id] = p;
+    _Particles[id] = p;
 }}";
 
             return eval;

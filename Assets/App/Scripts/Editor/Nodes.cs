@@ -128,7 +128,7 @@ namespace ToyEffectGraph.Editor
     {
         public override string EvaluateExpression()
         {
-            return "_time";
+            return "_Time";
         }
     }
 
