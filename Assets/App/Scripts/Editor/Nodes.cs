@@ -147,7 +147,7 @@ namespace ToyEffectGraph.Editor
     {
         public override string EvaluateExpression()
         {
-            return "_Position[i]";
+            return "p.position";
         }
     }
 
@@ -233,26 +233,4 @@ namespace ToyEffectGraph.Editor
                 $"float( {connectedNodeA.EvaluateExpression()}, {connectedNodeB.EvaluateExpression()}, {connectedNodeC.EvaluateExpression()} )";
         }
     }
-
-    // [Serializable]
-    // public class DecomposeVector : VectorConverterNode
-    // {
-    //     public const string InputPortName = "InputPort";
-    //     public const string OutputPortAName = "OutputPortA";
-    //     public const string OutputPortBName = "OutputPortB";
-    //     public const string OutputPortCName = "OutputPortC";
-    //
-    //     protected override void OnDefinePorts(IPortDefinitionContext context)
-    //     {
-    //         context.AddInputPort<Vector3>(InputPortName).WithDisplayName("vector").Build();
-    //         context.AddOutputPort<Vector3>(OutputPortAName).WithDisplayName("x").Build();
-    //         context.AddOutputPort<Vector3>(OutputPortBName).WithDisplayName("y").Build();
-    //         context.AddOutputPort<Vector3>(OutputPortCName).WithDisplayName("z").Build();
-    //     }
-    //
-    //     public override string EvaluateExpression()
-    //     {
-    //         throw new NotImplementedException();
-    //     }
-    // }
 }

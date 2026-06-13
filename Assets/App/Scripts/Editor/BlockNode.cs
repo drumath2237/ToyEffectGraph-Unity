@@ -24,7 +24,7 @@ namespace ToyEffectGraph.Editor
         {
             var connectedNode =
                 GetInputPortByName(PositionPortName).FirstConnectedPort.GetNode() as IEvaluatableExpression;
-            return $"_Position[i] = ( {connectedNode.EvaluateExpression()} );";
+            return $"p.position = ( {connectedNode.EvaluateExpression()} );";
         }
     }
 }
